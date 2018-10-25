@@ -1,0 +1,27 @@
+<p></p><div class="toc"><h3><a name="t0"></a>文章目录</h3><ul><ul><ul><li><a href="#1__3" rel="nofollow" target="_self">1： 前言</a></li><li><a href="#2_6" rel="nofollow" target="_self">2：创建标签</a></li><li><a href="#2_14" rel="nofollow" target="_self">2：操作标签</a></li></ul></ul></ul></div><p></p>
+<h3><a name="t1"></a><a id="1__3" target="_blank"></a>1： 前言</h3>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;Git的标签就是是版本库的快照，它其实就是指向某个commit的指针（跟分支很像，但是分支可以移动，标签不能移动），所以，创建和删除标签都是瞬间完成的。<br>
+&nbsp;&nbsp; &nbsp;&nbsp;<font color="red"><strong>注意</strong></font>：标签总是和某个commit挂钩。如果这个commit既出现在master分支，又出现在dev分支，那么在这两个分支上都可以看到这个标签。</p>
+<h3><a name="t2"></a><a id="2_6" target="_blank"></a>2：创建标签</h3>
+<ol>
+<li>切换到需要打标签的分支 ，然后 <code>git tag tagname</code>。<br>
+<strong>备注：</strong> 可以用<code>git tag</code>查看所有标签,<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;可以用<code>git show tagname</code>查看标签信息</li>
+<li>标签默认是打在最新的commit上，如果需要打在之前的commit上，可以使用<code>git log --pretty=oneline --abbrev-commit</code>查看commit id,然后用<code>git tag tagname commitId</code>打上就可以了。</li>
+<li>创建带有说明的标签，用-a指定标签名，-m指定说明文字,<code>git tag -a tagname -m "tag说明" commitId</code></li>
+</ol>
+<h3><a name="t3"></a><a id="2_14" target="_blank"></a>3：操作标签</h3>
+<ol>
+<li>
+<p>命令<code>git push origin tagname</code>可以推送一个本地标签到远程；</p>
+</li>
+<li>
+<p>命令<code>git push origin --tags</code>可以推送全部未推送过的本地标签；</p>
+</li>
+<li>
+<p>命令<code>git tag -d tagname</code>可以删除一个本地标签；</p>
+</li>
+<li>
+<p>如果标签已经推送到远程，但又需要删除的话，可以先用命令<code>git push origin :refs/tags/tagname</code>删除一个远程标签，然后再用<code>git tag -d tagname</code>删除本地标签。</p>
+</li>
+</ol>s

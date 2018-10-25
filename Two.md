@@ -1,0 +1,22 @@
+<p></p><div class="toc"><h3><a name="t0"></a>目录</h3><ul><ul><li><a href="#1__GitHub_3" rel="nofollow" target="_self">1:  在GitHub上添加公钥</a></li><li><a href="#2__11" rel="nofollow" target="_self">2： 将本地仓库与远程仓库关联</a></li><li><a href="#3__17" rel="nofollow" target="_self">3： 从远程仓库克隆</a></li></ul></ul></div><p></p>
+<h2><a name="t1"></a><a id="1__GitHub_3" target="_blank"></a>1:  在GitHub上添加公钥</h2>
+<ol>
+<li>创建GitHub账号</li>
+<li>创建SSH Key，GitBash执行<br>
+<code>ssh-keygen -t rsa -C "youremail@example.com"</code>，在用户主目录（在Bash先后中执行 <code>cd ~/.ssh</code> 、<code>pwd</code>即可找到主目录路径）下检查是否有<code>.ssh</code>目录，里面有<code>id_rsa</code>(私钥)和<code>id_rsa.pub</code>（公钥）两个文件，这两个就是SSH Key的秘钥对。</li>
+<li>打开GitHub，在个人主页找到setting，找到<code>SSH and GPG keys</code>，然后，点“New SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容。<br>
+<img src="https://img-blog.csdn.net/20181024165249624?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbGlsdW5p/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></li>
+</ol>
+<hr>
+<h2><a name="t2"></a><a id="2__11" target="_blank"></a>2： 将本地仓库与远程仓库关联</h2>
+<ol>
+<li>本地仓库为git，在GitHub上同样新建一个仓库为<code>git</code>，此时远程git仓库为空.</li>
+<li>创建远程仓库后，在GitBash中，在本地的<code>git</code>m目录里，执行命令<code>git remote add origin git@github.com:用户名/仓库名.git</code>实现关联</li>
+<li>执行<code>git push -u origin master</code>本地库的内容推送到远程，用git push命令，实际上是把当前分支master推送到远程（执行完后在GitHub上就可看到内容）。以后每次本地提交后，使用命令<code>git push origin master</code>推送最新修改</li>
+</ol>
+<hr>
+<h2><a name="t3"></a><a id="3__17" target="_blank"></a>3： 从远程仓库克隆</h2>
+<ol>
+<li>首先确保远程仓库有需要克隆的仓库，然后cd到本地仓库目录的上一级目录，执行：<code>git clone git@github.com:用户名/仓库名.git</code>,就会发现克隆到本地了。</li>
+<li>Git支持多种协议，包括https，但通过ssh支持的原生git协议速度最快</li>
+</ol>

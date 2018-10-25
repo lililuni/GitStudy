@@ -1,0 +1,75 @@
+<p></p><div class="toc"><h3><a name="t0"></a>目录</h3><ul><ul><ul><li><a href="#1__1" rel="nofollow" target="_self">1： 创建与合并分支</a></li><li><a href="#2__13" rel="nofollow" target="_self">2： 解决分支冲突</a></li><li><a href="#3__18" rel="nofollow" target="_self">3： 分支管理策略</a></li><li><a href="#4_Bug_26" rel="nofollow" target="_self">4： Bug分支</a></li><li><a href="#5_37" rel="nofollow" target="_self">5：强制分支删除</a></li><li><a href="#6_40" rel="nofollow" target="_self">6：多人协作</a></li></ul></ul></ul></div><p></p>
+<h3><a name="t1"></a><a id="1__1" target="_blank"></a>1： 创建与合并分支</h3>
+<ol>
+<li>创建分支<sup class="footnote-ref"><a href="#fn1" rel="nofollow" id="fnref1" target="_self">1</a></sup>dev： <code>git branch dev</code>；切换至div分支：<code>git checkout dev</code>,一句话：<code>git checkout -b dev</code></li>
+<li>用<code>git branch</code>命令查看当前分支,当前分支前面会标一个<code>*</code>号</li>
+<li>合并分支 ，先<code>git checkout master</code>切换到主分支，然后执行<code>git merge dev</code>进行合并。然后可以再执行<code>git branch -d dev</code>删除分支</li>
+<li>查看分支：git branch<br>
+创建分支：git branch name<br>
+切换分支：git checkout name<br>
+创建+切换分支：git checkout -b name<br>
+合并某分支到当前分支：git merge name<br>
+删除分支：git branch -d name</li>
+</ol>
+<hr>
+<h3><a name="t2"></a><a id="2__13" target="_blank"></a>2： 解决分支冲突</h3>
+<p>&nbsp;&nbsp;当Git无法自动合并分支时<sup class="footnote-ref"><a href="#fn2" rel="nofollow" id="fnref2" target="_self">2</a></sup>，就必须首先解决冲突。解决冲突后，再提交，合并完成。解决冲突就是把Git合并失败的文件手动编辑为我们希望的内容，再提交。用<code>git log --graph</code>命令可以看到分支合并图。<br>
+&nbsp;&nbsp;<strong>备注：</strong> 进入log后直接按 <code>Q</code>就可以退出。</p>
+<h3><a name="t3"></a><a id="3__18" target="_blank"></a>3： 分支管理策略</h3>
+<p>&nbsp;&nbsp;合并分支时<sup class="footnote-ref"><a href="#fn3" rel="nofollow" id="fnref3" target="_self">3</a></sup>，默认采取的为<code>Fast farword</code>模式，这种合并看不到合并历史，但是这种模式下，删除分支会丢掉分支信息。<br>
+1.禁用<code>Fast farword</code>模式时，合并分支会产生一个commit， <code>git merge --no-ff -m "merge with no-ff" dev</code> 其中，<code>--no-ff</code>参数，表示禁用Fast forward。<br>
+采用<code>git log --graph --pretty=oneline --abbrev-commit</code>查看分支历史。</p>
+<p><strong>备注</strong>：不用–no-ff，实际上只是将master的指针update成dev分支而已，用的还是dev的commit ID，而使用之后，则是重新commit了一哈，有了新的commit ID<br>
+<img src="https://img-blog.csdn.net/20181024211908208?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbGlsdW5p/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3><a name="t4"></a><a id="4_Bug_26" target="_blank"></a>4： Bug分支</h3>
+<p>我个人觉得场景是这样的。设A为游戏软件</p>
+<ol>
+<li>master 上面发布的是A的1.0版本</li>
+<li>dev 上开发的是A的2.0版本</li>
+<li>这时，用户反映 1.0版本存在漏洞，有人利用这个漏洞开外挂</li>
+<li>需要从dev切换到master去填这个漏洞，正常必须先提交dev目前的工作，才能切换。</li>
+<li>而dev的工作还未完成，不想提交，所以先把dev的工作stash一下<code>git stash</code>。然后切换到master</li>
+<li>如果是在master修复bug，就在master建立分支issue101并切换. <code>git checkout -b issue101</code></li>
+<li>在issue101上修复漏洞，并<code>git commit</code>。</li>
+<li>修复后，在master上合并issue101 ,<code>git merge --no-ff -m "merged bug fix 101" issue-101</code></li>
+<li>切回dev，<code>git stash list</code>命令看看stash内容，然后<code>git stash pop</code>，恢复的同时把stash内容也删了继续工作。</li>
+</ol>
+<h3><a name="t5"></a><a id="5_37" target="_blank"></a>5：强制分支删除</h3>
+<p>&nbsp;&nbsp;发一个新feature，最好新建一个分支；如果要丢弃一个没有被合并过的分支，可以通过<code>git branch -D branchname</code>强行删除。</p>
+<h3><a name="t6"></a><a id="6_40" target="_blank"></a>6：多人协作</h3>
+<p>多人协作的工作模式通常是这样<sup class="footnote-ref"><a href="#fn4" rel="nofollow" id="fnref4" target="_self">4</a></sup></p>
+<ol>
+<li>
+<p>查看远程库信息，使用<code>git remote -v</code>；</p>
+</li>
+<li>
+<p>本地新建的分支如果不推送到远程，对其他人就是不可见的；</p>
+</li>
+<li>
+<p>从本地推送分支，使用<code>git push origin branch-name</code>，如果推送失败，先用<code>git pull</code>抓取远程的新提交；</p>
+</li>
+<li>
+<p>在本地创建和远程分支对应的分支，使用<code>git checkout -b branch-name origin/branch-name</code>，本地和远程分支的名称最好一致；</p>
+</li>
+<li>
+<p>建立本地分支和远程分支的关联，使用<code>git branch --set-upstream branch-name origin/branch-name</code>；</p>
+</li>
+<li>
+<p>从远程抓取分支，使用<code>git pull</code>，如果有冲突，要先处理冲突。</p>
+</li>
+</ol>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>&nbsp;&nbsp;<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001375840038939c291467cc7c747b1810aab2fb8863508000" rel="nofollow" target="_blank">创建与合并分支原理详解</a> <a href="#fnref1" rel="nofollow" class="footnote-backref" target="_self">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>&nbsp;&nbsp;<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001375840202368c74be33fbd884e71b570f2cc3c0d1dcf000" rel="nofollow" target="_blank">解决分支冲突详解</a> <a href="#fnref2" rel="nofollow" class="footnote-backref" target="_self">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013758410364457b9e3d821f4244beb0fd69c61a185ae0000" rel="nofollow" target="_blank">分支管理策略</a> <a href="#fnref3" rel="nofollow" class="footnote-backref" target="_self">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013760174128707b935b0be6fc4fc6ace66c4f15618f8d000" rel="nofollow" target="_blank">多人协作</a>： <a href="#fnref4" rel="nofollow" class="footnote-backref" target="_self">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+          
