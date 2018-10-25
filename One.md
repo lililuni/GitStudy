@@ -1,0 +1,47 @@
+</p><div class="toc"><h3><a name="t0"></a>文章目录</h3><ul><ul><li><a href="#1__3" rel="nofollow" target="_self">1. 创建版本库</a></li><li><a href="#2___5" rel="nofollow" target="_self">2.  添加文件到版本库</a></li><li><a href="#3___17" rel="nofollow" target="_self">3.  版本回退</a></li><li><a href="#4__25" rel="nofollow" target="_self">4. 工作区和暂存区</a></li><ul><ul><li><a href="#_31" rel="nofollow" target="_self">撤消修改</a></li><li><a href="#_35" rel="nofollow" target="_self">删除文件</a></li></ul></ul></ul></ul></div><p></p>
+<h2><a name="t1"></a><a id="1__3" target="_blank"></a>1. 创建版本库</h2>
+<p>&nbsp;&nbsp;GitBash中 cd 到需要作为版本库的目录，执行<code>git init</code>,创建成功后会生成<code>.git</code>文件夹</p>
+<h2><a name="t2"></a><a id="2___5" target="_blank"></a>2.  添加文件到版本库</h2>
+<p>&nbsp;&nbsp;首先,文件必须放在在版本库对应的目录下,<br>
+&nbsp;&nbsp;添加文件到版本库步骤：</p>
+<ol>
+<li><code>git add</code> 文件.文件类型，将文件放进暂存区(暂存区，工作区概念详见第4小节)</li>
+<li><code>git commit -m “本次提交的说明”</code>，添加到版本库<br>
+<strong>备注</strong>:<br>
+<code>git status</code> 随时掌握工作状态，提示信息分析：<br>
+&nbsp;&nbsp;<code>Changes to be committed</code>: 已进入暂存区，但还未提交到版本库，需要commit<br>
+&nbsp;&nbsp;<code>Changes not staged for commit</code>:更改了，但是还未进入暂存区<br>
+&nbsp;&nbsp;<code>Untracked files</code>:表示该文件还从来没有被添加进版本库</li>
+</ol>
+<hr>
+<h2><a name="t3"></a><a id="3___17" target="_blank"></a>3.  版本回退</h2>
+<ol>
+<li><code>git log</code> 显示从最近到最远的提交日志,<code>git log --pretty=oneline</code> 使每个日志单独成行。</li>
+<li>git中，用<code>HEAD</code>表示当前版本</li>
+<li>回退到上一个版本：<code>git reset --hard HEAD^</code>,一个“^”表示回退1个版本，“~100”回退100个版本。</li>
+<li>返回新版本：<code>git reset --hard 新版本的Id</code></li>
+<li><code>git reflog</code>查看命令历史，以便确定要回到未来的哪个版本</li>
+</ol>
+<hr>
+<h2><a name="t4"></a><a id="4__25" target="_blank"></a>4. 工作区和暂存区</h2>
+<p>&nbsp;&nbsp;<strong>工作区</strong>：在电脑里能看到的目录； <strong>版本库</strong>：在工作区有一个隐藏目录.git，是Git的版本库。 Git的版本库中存了很多东西，其中最重要的就是称为stage（或者称为index）的暂存区，还有Git自动创建的master，以及指向master的指针HEAD。<br>
+![](https://img-blog.csdn.net/20181024151511183?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbGlsdW5p/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+<ol>
+<li><code>git diff HEAD -- readme.txt</code>命令可以查看工作区和版本库里面最新版本的区别</li>
+<li>Git是跟踪修改的,而不是跟踪文件，每次修改，如果不用git add到暂存区，那就不会加入到commit中。</li>
+</ol>
+<h4><a id="_31" target="_blank"></a>撤消修改</h4>
+<ol>
+<li>当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令<code>git checkout -- file</code>。</li>
+<li>当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令<code>git reset HEAD file</code>就回到了场景1，第二步按场景1操作。</li>
+<li>已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。</li>
+</ol>
+<h4><a id="_35" target="_blank"></a>删除文件</h4>
+<ol>
+<li>提交到版本库的文件，可以先 <code>rm file</code>删除文件</li>
+<li>确实要从版本库中删除该文件，那就用命令<code>git rm file</code>删掉，并且<code>git commit</code></li>
+<li>另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本<code>git checkout -- file</code><br>
+<strong>备注</strong>：<code>git checkout -- file</code>就是将版本库的文件替代工作区的文件</li>
+</ol>
+
+   
